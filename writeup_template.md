@@ -1,47 +1,11 @@
 # **Finding Lane Lines on the Road** 
 
-## Writeup Template
+When we drive we use our eyes to decide where we need to go. We use the lane lines on the road as a reference for where to steer the vehicle. In order to develop a self- driving vehicle, the vehicle must be able to determine the location of the lane lines on the road with a reference to the vehicle to enable the vehicle to drive itself.  This should be achieved through computer vision. The goal of this project is to use computer vision methodologies to detect lane lines on the road. 
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
+I developed a pipeline which take each image (frame of video) and process it to detect the lane lines on the road. First, I read the original image which consists of three color channels. Second I convert the image to grayscale which is one color channel. Transforming an image to grayscale makes easier to detect edges. Third, I smooth out the image creating a blurry image using the Gaussian filter. Forth, I use the canny edge detection theory to detect all edges in the image. Fifth, I mask out the area of interest which results in image showing only the edges of the lane lines. Sixth, I use Hough transform to detect the lane lines from the masked image. Finally, I overlay the detect lane lines over the original image.
 
----
+I use the draw_lines() and draw_fit_line() functions to draw a single line on the left and right lane line and filter out any outliers points or lines. I take all the points used by the Hough function to draw the lines on the edges to calculate the slope of each line. I use the calculated slope to separate the point for left and right lane lines. I also use a minimum and maximum slope to filter out any outliers. Then I use those points for left and right lane line to calculate the regression line. Finally I find the equation of the regression line and draw these lines over the original image.
 
-**Finding Lane Lines on the Road**
+Some of the shortcoming in my pipeline is that it doesn’t follow the curves at the end of the region or interest and I don’t think it will do a good job at detecting the lane lines at different weather conditions. It also not able to follow the lane lines for the challenge video.
 
-The goals / steps of this project are the following:
-* Make a pipeline that finds lane lines on the road
-* Reflect on your work in a written report
-
-
-[//]: # (Image References)
-
-[image1]: ./examples/grayscale.jpg "Grayscale"
-
----
-
-### Reflection
-
-### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
-
-My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
-
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
-
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
-
-![alt text][image1]
-
-
-### 2. Identify potential shortcomings with your current pipeline
-
-
-One potential shortcoming would be what would happen when ... 
-
-Another shortcoming could be ...
-
-
-### 3. Suggest possible improvements to your pipeline
-
-A possible improvement would be to ...
-
-Another potential improvement could be to ...
+Some of the possible improvements could be using polynomial regression instead of linear regression for curved lanes and adding more filters than the slope to filter out outliers.
